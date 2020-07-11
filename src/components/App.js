@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import { HashRouter as Router, Route } from "react-router-dom";
+import { HashRouter as Router, Route, NavLink } from "react-router-dom";
 import '../App.css';
 
 import Login from "./Login";
@@ -8,7 +8,7 @@ import Reserve from "./Reserve";
 
 class App extends React.Component {
   state = {
-    guestId: "3",
+    guestId: "",
     fullName: ""
   };
   render(){
@@ -19,8 +19,16 @@ class App extends React.Component {
           {this.state.guestId === "" ? (
             <Fragment>
               <ul className="Nav-list">
-                <li><a href="default.asp">Register</a></li>
-                <li><a href="news.asp">Login</a></li>
+                <li>
+                  <NavLink to ='/'>
+                        Login
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to ='/register'>
+                        Register
+                  </NavLink>
+                </li>
               </ul> 
               <h3>Welcome to Resturant Reservation System V0.1</h3>
               <Route path="/register" exact component={Register} />
@@ -29,7 +37,7 @@ class App extends React.Component {
               ) : (
                 <Fragment>
                   <ul className="Nav-list">
-                    <li><a href="default.asp">Logout</a></li>
+                    <li><a href="#">Logout</a></li>
                   </ul> 
                   <Reserve />
                 </Fragment>
