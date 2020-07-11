@@ -80,22 +80,22 @@ class Register extends React.Component {
                 onSubmit={this.handleSubmit}>
                     <div className='create-contact-details'>
                         <div className='form-element'>
-                          <lable>Fullname</lable>
+                          <label>Fullname</label>
                           <input type='text' name='fullName' placeholder='Rami' value={fullName}
                           onChange={this.handleChangeFullName} />
                         </div>
                         <div className='form-element'>
-                          <lable>Email</lable>
+                          <label>Email</label>
                           <input type='text' name='email' placeholder='someone@domain.com' value={email}
                           onChange={this.handleChangeEmail} />
                         </div>
                         <div className='form-element'>
-                          <lable>Mobile</lable>
+                          <label>Mobile</label>
                           <input type='text' name='mobile' placeholder='0599565705' value={mobile}
                           onChange={this.handleChangeMobile} />
                         </div>
                         <div className='form-element'>
-                          <lable>Password</lable>
+                          <label>Password</label>
                           <input type='password' name='password' placeholder='Password' value={password}
                           onChange={this.handleChangePassword} />
                         </div>

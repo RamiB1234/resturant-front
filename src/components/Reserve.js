@@ -3,6 +3,7 @@ import '../App.css';
 import serializeForm from 'form-serialize'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from 'axios';
 
 class Reserve extends React.Component {
     state = {
@@ -50,8 +51,18 @@ class Reserve extends React.Component {
 
     handleSubmit = (e) =>{
       e.preventDefault()
-      const values = serializeForm(e.target, {
-          hash: true
+
+      const formData = new FormData(e.target)
+      const body = {}
+      formData.forEach((value, property) => body[property] = value)
+
+      axios.post(`https://localhost:44385/api/reserve`, body)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
+      .catch(error => { 
+        console.log(error);
       })
   }
     render(){
@@ -65,14 +76,15 @@ class Reserve extends React.Component {
                 onSubmit={this.handleSubmit}>
                     <div className='create-contact-details'>
                       <div className='form-element'>
-                        <lable>Date</lable>
+                        <label>Date</label>
                         <DatePicker
+                          name="date"
                           selected={reserveDate}
                           onChange={this.handleDateChange}
                         />
                       </div>
                         <div className='form-element'>
-                          <lable>Meal</lable>
+                          <label>Meal</label>
                           <select name="meal" style={{"width":"70%"}} value={meal} onChange={this.handleChangeMeal}>
                             <option value="breakfast">Breakfast</option>
                             <option value="lunch">Lunch</option>
@@ -81,7 +93,7 @@ class Reserve extends React.Component {
                           </select>
                         </div>
                         <div className='form-element'>
-                          <lable>Notes</lable>
+                          <label>Notes</label>
                           <textarea type='text' name='notes' placeholder='Enter your order details' value={notes}
                           onChange={this.handleChangeNotes} />
                         </div>

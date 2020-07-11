@@ -42,11 +42,11 @@ class Login extends React.Component {
                 onSubmit={this.handleSubmit}>
                     <div className='create-contact-details'>
                         <div className='form-element'>
-                          <lable>Username</lable>
+                          <label>Username</label>
                           <input type='text' name='username' placeholder='Rami' value= {username} onChange={this.handleChangeUsername} />
                         </div>
                         <div className='form-element'>
-                          <lable>Password</lable>
+                          <label>Password</label>
                           <input type='password' name='password' placeholder='password' value= {password} onChange={this.handleChangePassword} />
                         </div>
                         <button className='form-element'
