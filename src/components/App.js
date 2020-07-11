@@ -8,26 +8,29 @@ import Reserve from "./Reserve";
 
 class App extends React.Component {
   state = {
-    guestId: "",
+    guestId: "3",
     fullName: ""
   };
   render(){
     return (
       <div className="App">
         <header className="App-header">
-          <ul className="Nav-list">
-              <li><a href="default.asp">Register</a></li>
-              <li><a href="news.asp">Login</a></li>
-          </ul> 
           <Router basename="/">
           {this.state.guestId === "" ? (
             <Fragment>
+              <ul className="Nav-list">
+                <li><a href="default.asp">Register</a></li>
+                <li><a href="news.asp">Login</a></li>
+              </ul> 
               <h3>Welcome to Resturant Reservation System V0.1</h3>
               <Route path="/register" exact component={Register} />
               <Route path="/" component={Login} />
             </Fragment>
               ) : (
                 <Fragment>
+                  <ul className="Nav-list">
+                    <li><a href="default.asp">Logout</a></li>
+                  </ul> 
                   <Reserve />
                 </Fragment>
               )}
