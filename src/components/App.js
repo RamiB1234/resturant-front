@@ -32,7 +32,7 @@ class App extends React.Component {
               </ul> 
               <h3>Welcome to Resturant Reservation System V0.1</h3>
               <Route path="/register" exact component={Register} />
-              <Route path="/" component={Login} />
+              <Route path="/" exact component={Login} />
             </Fragment>
               ) : (
                 <Fragment>
