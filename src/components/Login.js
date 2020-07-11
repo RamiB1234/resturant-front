@@ -4,7 +4,26 @@ import serializeForm from 'form-serialize'
 
 class Login extends React.Component {
     state = {
+      username: "",
+      password: ""
     };
+
+    handleChangeUsername = e => {
+      const text = e.target.value;
+  
+      this.setState(() => ({
+        username: text
+      }));
+    };
+
+    handleChangePassword = e => {
+      const text = e.target.value;
+  
+      this.setState(() => ({
+        password: text
+      }));
+    };
+
     handleSubmit = (e) =>{
       e.preventDefault()
       const values = serializeForm(e.target, {
@@ -12,6 +31,9 @@ class Login extends React.Component {
       })
   }
     render(){
+
+      const { username, password } = this.state;
+
       return (
         <div className="App">
           <header className="App-header">
@@ -21,13 +43,14 @@ class Login extends React.Component {
                     <div className='create-contact-details'>
                         <div className='form-element'>
                           <lable>Username</lable>
-                          <input type='text' name='name' placeholder='Name' />
+                          <input type='text' name='username' placeholder='Rami' value= {username} onChange={this.handleChangeUsername} />
                         </div>
                         <div className='form-element'>
                           <lable>Password</lable>
-                          <input type='text' name='name' placeholder='Name' />
+                          <input type='password' name='password' placeholder='password' value= {password} onChange={this.handleChangePassword} />
                         </div>
-                        <button className='form-element'>Login</button>
+                        <button className='form-element'
+                        disabled={username === "" || password === ""}>Login</button>
                     </div>
             </form>
           </header>

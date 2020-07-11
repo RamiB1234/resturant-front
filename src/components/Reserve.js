@@ -4,7 +4,18 @@ import serializeForm from 'form-serialize'
 
 class Reserve extends React.Component {
     state = {
+      meal: "",
+      notes: ""
     };
+
+    handleChangeNotes = e => {
+      const text = e.target.value;
+
+      this.setState(() => ({
+        notes: text
+      }));
+    };
+
     handleSubmit = (e) =>{
       e.preventDefault()
       const values = serializeForm(e.target, {
@@ -12,6 +23,8 @@ class Reserve extends React.Component {
       })
   }
     render(){
+
+      const { notes} = this.state;
       return (
         <div className="App">
           <header className="App-header">
@@ -20,8 +33,8 @@ class Reserve extends React.Component {
                 onSubmit={this.handleSubmit}>
                     <div className='create-contact-details'>
                         <div className='form-element'>
-                          <lable>Fullname</lable>
-                          <select name="cars" id="cars" style={{"width":"70%"}}>
+                          <lable>Meal</lable>
+                          <select name="meal" style={{"width":"70%"}}>
                             <option value="breakfast">Breakfast</option>
                             <option value="lunch">Lunch</option>
                             <option value="dinner">Dinner</option>
@@ -29,10 +42,12 @@ class Reserve extends React.Component {
                           </select>
                         </div>
                         <div className='form-element'>
-                          <lable>Details</lable>
-                          <textarea type='text' name='name' placeholder='Name' />
+                          <lable>Notes</lable>
+                          <textarea type='text' name='notes' placeholder='Enter your order details' value={notes}
+                          onChange={this.handleChangeNotes} />
                         </div>
-                        <button className='form-element'>Reserve</button>
+                        <button className='form-element'
+                        disabled={notes === ""}>Reserve</button>
                     </div>
             </form>
           </header>
