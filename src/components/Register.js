@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import serializeForm from 'form-serialize'
+import axios from 'axios';
 
 class Register extends React.Component {
     state = {
@@ -8,7 +8,10 @@ class Register extends React.Component {
       email: "",
       mobile: "",
       password: "",
-      showEmailError: false
+      showEmailError: false,
+      showRegistrationFail: false,
+      showRegistrationSuccessful: false,
+      redirctToLogin: false
     };
 
     handleChangeFullName = e => {
@@ -57,9 +60,36 @@ class Register extends React.Component {
         this.setState(() => ({
           showEmailError: false,
         }));
-        const values = serializeForm(e.target, {
-          hash: true
-      })
+        
+        const formData = new FormData(e.target)
+        const body = {}
+        formData.forEach((value, property) => body[property] = value)
+        const that = this;
+
+        axios.post(`https://localhost:44385/api/auth/register`, body)
+        .then(res => {
+          console.log(res.status);
+
+          this.setState({
+            showRegistrationFail: false,
+            showRegistrationSuccessful: true
+          });
+
+          setTimeout(function () {
+            // redirect to login
+            that.setState(() => ({
+              redirctToLogin: true
+            }));
+ 
+        }, 1000);
+        })
+        .catch(error => { 
+          console.log("error :"+error);
+          this.setState({
+            showRegistrationFail: true,
+            showRegistrationSuccessful: false
+          });
+        })
       }
       else{
         this.setState(() => ({
@@ -70,7 +100,8 @@ class Register extends React.Component {
   }
     render(){
 
-      const { fullName, email, mobile, password, showEmailError } = this.state;
+      const { fullName, email, mobile, password, showEmailError,
+         showRegistrationFail, showRegistrationSuccessful, redirctToLogin } = this.state;
 
       return (
         <div className="App">
@@ -103,11 +134,22 @@ class Register extends React.Component {
                         disabled={fullName === "" || email === "" || mobile === "" || password === ""}>Register</button>
                     </div>
             </form>
-            {showEmailError== false ? '': (
+            {showEmailError=== false ? '': (
             <div style={{"color": "red"}}>
             Please enter a valid email
           </div>
             )}
+            {showRegistrationFail=== false ? '': (
+            <div style={{"color": "red"}}>
+            User registration failed, please contact admin
+          </div>
+            )}
+            {showRegistrationSuccessful=== false ? '': (
+            <div style={{"color": "green"}}>
+            User registration is successful
+          </div>
+            )}
+            {redirctToLogin== false ? '' : this.props.history.push('/')}
 
           </header>
         </div>

@@ -8,7 +8,7 @@ import Reserve from "./Reserve";
 
 class App extends React.Component {
   state = {
-    guestId: "3",
+    guestId: "",
     fullName: ""
   };
 

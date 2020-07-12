@@ -1,6 +1,5 @@
 import React from 'react';
 import '../App.css';
-import serializeForm from 'form-serialize'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
