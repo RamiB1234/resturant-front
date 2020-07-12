@@ -11,6 +11,14 @@ class App extends React.Component {
     guestId: "3",
     fullName: ""
   };
+
+  logout = () => {
+    this.setState(() => ({
+      guestId: "",
+      fullName: ""
+    }));
+  }
+  
   render(){
     return (
       <div className="App">
@@ -37,7 +45,7 @@ class App extends React.Component {
               ) : (
                 <Fragment>
                   <ul className="Nav-list">
-                    <li><a href="#">Logout</a></li>
+                    <li><a href="#" onClick={this.logout}>Logout</a></li>
                   </ul> 
                   <Reserve />
                 </Fragment>
