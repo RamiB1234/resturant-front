@@ -11,7 +11,9 @@ class Reserve extends React.Component {
       notes: "",
       reserveDate: "",
       showDateError: false,
-      notesLength: 0
+      notesLength: 0,
+      showReservationSuccess: false,
+      showReservationFail: false
     };
 
     handleChangeMeal = e => {
@@ -58,16 +60,24 @@ class Reserve extends React.Component {
 
       axios.post(`https://localhost:44385/api/reserve`, body)
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        console.log(res.status);
+        this.setState({
+          showReservationSuccess: true,
+          showReservationFail: false
+        });
       })
       .catch(error => { 
-        console.log(error);
+        console.log("error :"+error);
+        this.setState({
+          showReservationFail: true,
+          showReservationSuccess: false
+        });
       })
   }
     render(){
 
-      const { meal, notes, reserveDate, showDateError, notesLength} = this.state;
+      const { meal, notes, reserveDate, showDateError, 
+        notesLength, showReservationSuccess, showReservationFail} = this.state;
       return (
         <div className="App">
           <header className="App-header">
@@ -105,6 +115,16 @@ class Reserve extends React.Component {
             {showDateError== false ? '': (
             <div style={{"color": "red"}}>
             Please enter a date in the future
+          </div>
+            )}
+            {showReservationFail== false ? '': (
+            <div style={{"color": "red"}}>
+            An error has occured, try again later
+          </div>
+            )}
+            {showReservationSuccess== false ? '': (
+            <div style={{"color": "white"}}>
+            Reservation request is successful
           </div>
             )}
           </header>
