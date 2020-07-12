@@ -4,15 +4,16 @@ import serializeForm from 'form-serialize'
 
 class Login extends React.Component {
     state = {
-      username: "",
-      password: ""
+      email: "",
+      password: "",
+      showEmailError: false
     };
 
-    handleChangeUsername = e => {
+    handleChangeEmail = e => {
       const text = e.target.value;
   
       this.setState(() => ({
-        username: text
+        email: text
       }));
     };
 
@@ -26,13 +27,25 @@ class Login extends React.Component {
 
     handleSubmit = (e) =>{
       e.preventDefault()
-      const values = serializeForm(e.target, {
-          hash: true
-      })
-  }
+      const {email } = this.state;
+      const reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+      const validEmail= reg.test(email);
+      if(validEmail){
+        this.setState(() => ({
+          showEmailError: false,
+        }));
+      }
+      else{
+        this.setState(() => ({
+          showEmailError: true,
+          email: ''
+        }));
+      }
+    }
     render(){
 
-      const { username, password } = this.state;
+      const { email, password, showEmailError } = this.state;
 
       return (
         <div className="App">
@@ -42,17 +55,22 @@ class Login extends React.Component {
                 onSubmit={this.handleSubmit}>
                     <div className='create-contact-details'>
                         <div className='form-element'>
-                          <label>Username</label>
-                          <input type='text' name='username' placeholder='Rami' value= {username} onChange={this.handleChangeUsername} />
+                          <label>Email</label>
+                          <input type='text' name='email' placeholder='someone@domain.com' value= {email} onChange={this.handleChangeEmail} />
                         </div>
                         <div className='form-element'>
                           <label>Password</label>
                           <input type='password' name='password' placeholder='password' value= {password} onChange={this.handleChangePassword} />
                         </div>
                         <button className='form-element'
-                        disabled={username === "" || password === ""}>Login</button>
+                        disabled={email === "" || password === ""}>Login</button>
                     </div>
             </form>
+            {showEmailError=== false ? '': (
+            <div style={{"color": "red"}}>
+            Please enter a valid email
+          </div>
+            )}
           </header>
         </div>
       );
