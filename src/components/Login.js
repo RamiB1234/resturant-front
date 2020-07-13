@@ -1,12 +1,13 @@
 import React from 'react';
 import '../App.css';
-import serializeForm from 'form-serialize'
+import axios from 'axios';
 
 class Login extends React.Component {
     state = {
       email: "",
       password: "",
-      showEmailError: false
+      showEmailError: false,
+      showLoginError: false
     };
 
     handleChangeEmail = e => {
@@ -35,17 +36,38 @@ class Login extends React.Component {
         this.setState(() => ({
           showEmailError: false,
         }));
+
+        const formData = new FormData(e.target)
+        const body = {}
+        formData.forEach((value, property) => body[property] = value)
+        const that = this;
+
+        axios.post(`https://localhost:44385/api/auth`, body)
+        .then(res => {
+          console.log(res.status);
+          this.props.saveUserDetails(res.data.userId, res.data.fullName, res.data.token)
+
+        })
+        .catch(error => { 
+          console.log("error :"+error);
+          this.setState(() => ({
+            showEmailError: false,
+            showLoginError: true
+          }));
+
+        })
       }
       else{
         this.setState(() => ({
           showEmailError: true,
+          showLoginError: false,
           email: ''
         }));
       }
     }
     render(){
 
-      const { email, password, showEmailError } = this.state;
+      const { email, password, showEmailError, showLoginError } = this.state;
 
       return (
         <div className="App">
@@ -69,6 +91,11 @@ class Login extends React.Component {
             {showEmailError=== false ? '': (
             <div style={{"color": "red"}}>
             Please enter a valid email
+          </div>
+            )}
+            {showLoginError=== false ? '': (
+            <div style={{"color": "red"}}>
+            Username or password is not correct
           </div>
             )}
           </header>

@@ -8,15 +8,26 @@ import Reserve from "./Reserve";
 
 class App extends React.Component {
   state = {
-    guestId: "",
-    fullName: ""
+    userId: "",
+    fullName: "",
+    token: ""
   };
 
   logout = () => {
     this.setState(() => ({
-      guestId: "",
+      userId: "",
       fullName: ""
     }));
+  }
+
+  saveUserDetails= (id, name, token) =>{
+    this.setState(() => ({
+      userId: id,
+      fullName: name,
+      token: token
+    }));
+
+    console.log('token is: '+ this.state.token);
   }
   
   render(){
@@ -24,7 +35,7 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">
           <Router basename="/">
-          {this.state.guestId === "" ? (
+          {this.state.userId === "" ? (
             <Fragment>
               <ul className="Nav-list">
                 <li>
@@ -40,14 +51,15 @@ class App extends React.Component {
               </ul> 
               <h3>Welcome to Resturant Reservation System V0.1</h3>
               <Route path="/register" exact component={Register} />
-              <Route path="/" exact component={Login} />
+              <Route path="/" exact render={props => <Login saveUserDetails = {this.saveUserDetails} />} />
             </Fragment>
               ) : (
                 <Fragment>
                   <ul className="Nav-list">
+                    <li><a href='#'>Welcome {this.state.fullName}</a></li>
                     <li><a href="#" onClick={this.logout}>Logout</a></li>
                   </ul> 
-                  <Reserve />
+                  <Reserve token={this.state.token} userId={this.state.userId} />
                 </Fragment>
               )}
           </Router>

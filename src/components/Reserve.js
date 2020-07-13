@@ -57,7 +57,11 @@ class Reserve extends React.Component {
       const body = {}
       formData.forEach((value, property) => body[property] = value)
 
-      axios.post(`https://localhost:44385/api/reserve`, body)
+      axios.post(`https://localhost:44385/api/reserve`, body, {headers: {
+        'Authorization': "Bearer "+this.props.token,
+        'Accept' : 'application/json',
+        'Content-Type': 'application/json'
+    }})
       .then(res => {
         console.log(res.status);
         this.setState({
@@ -106,6 +110,8 @@ class Reserve extends React.Component {
                           <textarea type='text' name='notes' placeholder='Enter your order details' value={notes}
                           onChange={this.handleChangeNotes} />
                         </div>
+
+                        <input type='hidden' name='userId' value={this.props.userId} />
                         {300-notesLength} Remaining
                         <button className='form-element'
                         disabled={notes === "" || reserveDate === ""}>Reserve</button>

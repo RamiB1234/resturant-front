@@ -49,6 +49,10 @@ class Register extends React.Component {
       }));
     };
 
+    redirect = () =>{
+      
+    }
+
     handleSubmit = (e) =>{
       e.preventDefault()
 
