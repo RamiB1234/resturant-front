@@ -11,7 +11,9 @@ class App extends React.Component {
   state = {
     userId: "",
     fullName: "",
-    token: ""
+    token: "",
+    localAPI: "https://localhost:44385/api",
+    remoteAPI:"https://resturantapi20200713042036.azurewebsites.net/api"
   };
 
   logout = () => {
@@ -37,7 +39,7 @@ class App extends React.Component {
         <header className="App-header">
         <LoadingBar
           height={3}
-          color='#f11946'
+          color='#1a1aff'
           onRef={ref => (this.LoadingBar = ref)}
         />
           <Router basename="/">
@@ -57,11 +59,13 @@ class App extends React.Component {
               </ul> 
               <h3>Welcome to Resturant Reservation System V0.1</h3>
               <Route path="/register" exact render={props =><Register
+              localAPI = {this.state.localAPI} remoteAPI={this.state.remoteAPI}
               startLoading={() => this.LoadingBar.continuousStart()}
               finishLoading={() => this.LoadingBar.complete()} />} 
               />
               
               <Route path="/" exact render={props => <Login 
+                localAPI = {this.state.localAPI} remoteAPI={this.state.remoteAPI}
                 saveUserDetails = {this.saveUserDetails}
                 startLoading={() => this.LoadingBar.continuousStart()}
               finishLoading={() => this.LoadingBar.complete()}/>} />
@@ -73,6 +77,7 @@ class App extends React.Component {
                     <li><a href="#" onClick={this.logout}>Logout</a></li>
                   </ul> 
                   <Reserve token={this.state.token} userId={this.state.userId}
+                  localAPI = {this.state.localAPI} remoteAPI={this.state.remoteAPI}
                   startLoading={() => this.LoadingBar.continuousStart()}
                   finishLoading={() => this.LoadingBar.complete()} />
                 </Fragment>

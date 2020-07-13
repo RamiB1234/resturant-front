@@ -25,8 +25,8 @@ class Reserve extends React.Component {
     }
 
     fetchUserReservations = function(){
-      const { userId, token} = this.props;
-      axios.get(`https://localhost:44385/api/reserve/`+userId,{headers: {
+      const { userId, token, localAPI, remoteAPI} = this.props;
+      axios.get(`${localAPI}/reserve/`+userId,{headers: {
         'Authorization': "Bearer "+ token,
         'Accept' : 'application/json',
         'Content-Type': 'application/json'
@@ -82,14 +82,14 @@ class Reserve extends React.Component {
       formData.forEach((value, property) => body[property] = value)
       body.userId = this.props.userId;
 console.log(body);
-      const { startLoading, finishLoading, token} = this.props;
+      const { startLoading, finishLoading, token, localAPI, remoteAPI} = this.props;
 
       startLoading();
       this.setState({
         isLoading: true
       });
 
-      axios.post(`https://localhost:44385/api/reserve`, body, {headers: {
+      axios.post(`${localAPI}/reserve`, body, {headers: {
         'Authorization': "Bearer "+ token,
         'Accept' : 'application/json',
         'Content-Type': 'application/json'

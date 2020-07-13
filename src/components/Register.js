@@ -69,14 +69,14 @@ class Register extends React.Component {
         formData.forEach((value, property) => body[property] = value)
         const that = this;
 
-        const { startLoading, finishLoading } = this.props;
+        const { startLoading, finishLoading, localAPI, remoteAPI } = this.props;
 
         startLoading();
         this.setState({
           isLoading: true
         });
 
-        axios.post(`https://localhost:44385/api/auth/register`, body)
+        axios.post(`${localAPI}/auth/register`, body)
         .then(res => {
           console.log(res.status);
 

@@ -43,14 +43,14 @@ class Login extends React.Component {
         formData.forEach((value, property) => body[property] = value)
         const that = this;
 
-        const { startLoading, finishLoading, saveUserDetails } = this.props;
+        const { startLoading, finishLoading, saveUserDetails, localAPI, remoteAPI } = this.props;
 
         startLoading();
         this.setState({
           isLoading: true
         });
 
-        axios.post(`https://localhost:44385/api/auth`, body)
+        axios.post(`${localAPI}/auth`, body)
         .then(res => {
           console.log(res.status);
           saveUserDetails(res.data.userId, res.data.fullName, res.data.token)
