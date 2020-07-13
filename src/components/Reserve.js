@@ -12,7 +12,8 @@ class Reserve extends React.Component {
       showDateError: false,
       notesLength: 0,
       showReservationSuccess: false,
-      showReservationFail: false
+      showReservationFail: false,
+      isLoading: false
     };
 
     handleChangeMeal = e => {
@@ -57,30 +58,41 @@ class Reserve extends React.Component {
       const body = {}
       formData.forEach((value, property) => body[property] = value)
 
+      const { startLoading, finishLoading, token} = this.props;
+
+      startLoading();
+      this.setState({
+        isLoading: true
+      });
+
       axios.post(`https://localhost:44385/api/reserve`, body, {headers: {
-        'Authorization': "Bearer "+this.props.token,
+        'Authorization': "Bearer "+ token,
         'Accept' : 'application/json',
         'Content-Type': 'application/json'
     }})
       .then(res => {
         console.log(res.status);
+        finishLoading();
         this.setState({
           showReservationSuccess: true,
-          showReservationFail: false
+          showReservationFail: false,
+          isLoading: false
         });
       })
       .catch(error => { 
         console.log("error :"+error);
+        finishLoading();
         this.setState({
           showReservationFail: true,
-          showReservationSuccess: false
+          showReservationSuccess: false,
+          isLoading: false
         });
       })
   }
     render(){
 
       const { meal, notes, reserveDate, showDateError, 
-        notesLength, showReservationSuccess, showReservationFail} = this.state;
+        notesLength, showReservationSuccess, showReservationFail, isLoading} = this.state;
       return (
         <div className="App">
           <header className="App-header">
@@ -114,7 +126,7 @@ class Reserve extends React.Component {
                         <input type='hidden' name='userId' value={this.props.userId} />
                         {300-notesLength} Remaining
                         <button className='form-element'
-                        disabled={notes === "" || reserveDate === ""}>Reserve</button>
+                        disabled={notes === "" || reserveDate === "" || isLoading=== true}>Reserve</button>
                     </div>
             </form>
             {showDateError== false ? '': (

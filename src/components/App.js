@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
-import { HashRouter as Router, Route, NavLink } from "react-router-dom";
+import LoadingBar from 'react-top-loading-bar';
+import { HashRouter as Router, Route, NavLink, withRouter } from "react-router-dom";
 import '../App.css';
 
 import Login from "./Login";
@@ -34,6 +35,11 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
+        <LoadingBar
+          height={3}
+          color='#f11946'
+          onRef={ref => (this.LoadingBar = ref)}
+        />
           <Router basename="/">
           {this.state.userId === "" ? (
             <Fragment>
@@ -50,8 +56,15 @@ class App extends React.Component {
                 </li>
               </ul> 
               <h3>Welcome to Resturant Reservation System V0.1</h3>
-              <Route path="/register" exact component={Register} />
-              <Route path="/" exact render={props => <Login saveUserDetails = {this.saveUserDetails} />} />
+              <Route path="/register" exact render={props =><Register
+              startLoading={() => this.LoadingBar.continuousStart()}
+              finishLoading={() => this.LoadingBar.complete()} />} 
+              />
+              
+              <Route path="/" exact render={props => <Login 
+                saveUserDetails = {this.saveUserDetails}
+                startLoading={() => this.LoadingBar.continuousStart()}
+              finishLoading={() => this.LoadingBar.complete()}/>} />
             </Fragment>
               ) : (
                 <Fragment>
@@ -59,7 +72,9 @@ class App extends React.Component {
                     <li><a href='#'>Welcome {this.state.fullName}</a></li>
                     <li><a href="#" onClick={this.logout}>Logout</a></li>
                   </ul> 
-                  <Reserve token={this.state.token} userId={this.state.userId} />
+                  <Reserve token={this.state.token} userId={this.state.userId}
+                  startLoading={() => this.LoadingBar.continuousStart()}
+                  finishLoading={() => this.LoadingBar.complete()} />
                 </Fragment>
               )}
           </Router>

@@ -7,7 +7,8 @@ class Login extends React.Component {
       email: "",
       password: "",
       showEmailError: false,
-      showLoginError: false
+      showLoginError: false,
+      isLoading: false
     };
 
     handleChangeEmail = e => {
@@ -42,19 +43,30 @@ class Login extends React.Component {
         formData.forEach((value, property) => body[property] = value)
         const that = this;
 
+        const { startLoading, finishLoading, saveUserDetails } = this.props;
+
+        startLoading();
+        this.setState({
+          isLoading: true
+        });
+
         axios.post(`https://localhost:44385/api/auth`, body)
         .then(res => {
           console.log(res.status);
-          this.props.saveUserDetails(res.data.userId, res.data.fullName, res.data.token)
-
+          saveUserDetails(res.data.userId, res.data.fullName, res.data.token)
+          finishLoading();
+          this.setState({
+            isLoading: false
+          });
         })
         .catch(error => { 
           console.log("error :"+error);
           this.setState(() => ({
             showEmailError: false,
-            showLoginError: true
+            showLoginError: true,
+            isLoading: false
           }));
-
+          finishLoading();
         })
       }
       else{
@@ -67,7 +79,7 @@ class Login extends React.Component {
     }
     render(){
 
-      const { email, password, showEmailError, showLoginError } = this.state;
+      const { email, password, showEmailError, showLoginError, isLoading } = this.state;
 
       return (
         <div className="App">
@@ -85,7 +97,7 @@ class Login extends React.Component {
                           <input type='password' name='password' placeholder='password' value= {password} onChange={this.handleChangePassword} />
                         </div>
                         <button className='form-element'
-                        disabled={email === "" || password === ""}>Login</button>
+                        disabled={email === "" || password === "" || isLoading===true}>Login</button>
                     </div>
             </form>
             {showEmailError=== false ? '': (

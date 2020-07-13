@@ -1,6 +1,7 @@
 import React from 'react';
 import '../App.css';
 import axios from 'axios';
+import { withRouter } from "react-router-dom";
 
 class Register extends React.Component {
     state = {
@@ -11,7 +12,8 @@ class Register extends React.Component {
       showEmailError: false,
       showRegistrationFail: false,
       showRegistrationSuccessful: false,
-      redirctToLogin: false
+      redirctToLogin: false,
+      isLoading: false
     };
 
     handleChangeFullName = e => {
@@ -49,10 +51,6 @@ class Register extends React.Component {
       }));
     };
 
-    redirect = () =>{
-      
-    }
-
     handleSubmit = (e) =>{
       e.preventDefault()
 
@@ -70,13 +68,26 @@ class Register extends React.Component {
         formData.forEach((value, property) => body[property] = value)
         const that = this;
 
+        const { startLoading, finishLoading } = this.props;
+
+        startLoading();
+        this.setState({
+          isLoading: true
+        });
+
         axios.post(`https://localhost:44385/api/auth/register`, body)
         .then(res => {
           console.log(res.status);
 
           this.setState({
             showRegistrationFail: false,
-            showRegistrationSuccessful: true
+            showRegistrationSuccessful: true,
+            isLoading: false
+          });
+
+          that.props.finishLoading();
+          this.setState({
+            isLoading: false
           });
 
           setTimeout(function () {
@@ -93,6 +104,7 @@ class Register extends React.Component {
             showRegistrationFail: true,
             showRegistrationSuccessful: false
           });
+          finishLoading();
         })
       }
       else{
@@ -102,10 +114,11 @@ class Register extends React.Component {
         }));
       }
   }
+
     render(){
 
       const { fullName, email, mobile, password, showEmailError,
-         showRegistrationFail, showRegistrationSuccessful, redirctToLogin } = this.state;
+         showRegistrationFail, showRegistrationSuccessful, redirctToLogin, isLoading } = this.state;
 
       return (
         <div className="App">
@@ -135,7 +148,7 @@ class Register extends React.Component {
                           onChange={this.handleChangePassword} />
                         </div>
                         <button className='form-element'
-                        disabled={fullName === "" || email === "" || mobile === "" || password === ""}>Register</button>
+                        disabled={fullName === "" || email === "" || mobile === "" || password === "" || isLoading===true}>Register</button>
                     </div>
             </form>
             {showEmailError=== false ? '': (
@@ -153,7 +166,7 @@ class Register extends React.Component {
             User registration is successful
           </div>
             )}
-            {redirctToLogin== false ? '' : this.props.history.push('/')}
+            {redirctToLogin== false ? '' : this.props.history.push('/') }
 
           </header>
         </div>
@@ -162,4 +175,4 @@ class Register extends React.Component {
   
   }
   
-  export default Register;
+  export default withRouter(Register);
