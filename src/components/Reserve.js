@@ -4,6 +4,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 
+import Reservation from './Reservation';
+
 class Reserve extends React.Component {
     state = {
       meal: "",
@@ -13,8 +15,29 @@ class Reserve extends React.Component {
       notesLength: 0,
       showReservationSuccess: false,
       showReservationFail: false,
-      isLoading: false
+      isLoading: false,
+      reservations: []
     };
+
+    
+    componentDidMount() {
+      this.fetchUserReservations();
+    }
+
+    fetchUserReservations = function(){
+      const { userId, token} = this.props;
+      axios.get(`https://localhost:44385/api/reserve/`+userId,{headers: {
+        'Authorization': "Bearer "+ token,
+        'Accept' : 'application/json',
+        'Content-Type': 'application/json'
+    }})
+      .then(res => {
+        console.log(res.data);
+        this.setState({
+          reservations: res.data
+        });
+      })
+    }
 
     handleChangeMeal = e => {
       const selectedMeal = e.target.value;
@@ -57,7 +80,8 @@ class Reserve extends React.Component {
       const formData = new FormData(e.target)
       const body = {}
       formData.forEach((value, property) => body[property] = value)
-
+      body.userId = this.props.userId;
+console.log(body);
       const { startLoading, finishLoading, token} = this.props;
 
       startLoading();
@@ -78,6 +102,7 @@ class Reserve extends React.Component {
           showReservationFail: false,
           isLoading: false
         });
+        this.fetchUserReservations();
       })
       .catch(error => { 
         console.log("error :"+error);
@@ -92,58 +117,76 @@ class Reserve extends React.Component {
     render(){
 
       const { meal, notes, reserveDate, showDateError, 
-        notesLength, showReservationSuccess, showReservationFail, isLoading} = this.state;
+        notesLength, showReservationSuccess, showReservationFail, isLoading, reservations} = this.state;
       return (
         <div className="App">
           <header className="App-header">
-            <h1>Reserve</h1>
-            <form className='create-contact-form'
+            <br/><h1>Reserve</h1><br/>
+            <form
                 onSubmit={this.handleSubmit}>
-                    <div className='create-contact-details'>
-                      <div className='form-element'>
+                    <div>
+                      <div className='form-group'>
                         <label>Date</label>
                         <DatePicker
                           name="date"
+                          className='form-control'
                           selected={reserveDate}
                           onChange={this.handleDateChange}
                         />
                       </div>
-                        <div className='form-element'>
+                        <div className='form-group'>
                           <label>Meal</label>
-                          <select name="meal" style={{"width":"70%"}} value={meal} onChange={this.handleChangeMeal}>
+                          <select name="meal" className='form-control' value={meal} onChange={this.handleChangeMeal}>
                             <option value="breakfast">Breakfast</option>
                             <option value="lunch">Lunch</option>
                             <option value="dinner">Dinner</option>
                             <option value="drink">Drink</option>
                           </select>
                         </div>
-                        <div className='form-element'>
+                        <div className='form-group'>
                           <label>Notes</label>
-                          <textarea type='text' name='notes' placeholder='Enter your order details' value={notes}
+                          <textarea type='text' className='form-control' name='notes' placeholder='Enter your order details' value={notes}
                           onChange={this.handleChangeNotes} />
                         </div>
-
-                        <input type='hidden' name='userId' value={this.props.userId} />
-                        {300-notesLength} Remaining
-                        <button className='form-element'
+                        <small>{300-notesLength} Remaining</small><br/>
+                        <button className='btn btn-primary'
                         disabled={notes === "" || reserveDate === "" || isLoading=== true}>Reserve</button>
                     </div>
             </form>
-            {showDateError== false ? '': (
-            <div style={{"color": "red"}}>
-            Please enter a date in the future
-          </div>
+            <br/>
+            {showDateError=== false ? '': (
+            <div className="alert alert-danger" role="alert">
+              Please enter a date in the future
+            </div>
             )}
-            {showReservationFail== false ? '': (
-            <div style={{"color": "red"}}>
-            An error has occured, try again later
-          </div>
+            {showReservationFail=== false ? '': (
+            <div className="alert alert-danger" role="alert">
+              An error has occured
+            </div>
             )}
-            {showReservationSuccess== false ? '': (
-            <div style={{"color": "white"}}>
-            Reservation request is successful
-          </div>
+            {showReservationSuccess=== false ? '': (
+            <div className="alert alert-success" role="alert">
+              Reservation request is complete
+            </div>
             )}
+
+            <div>
+              <h3>History</h3>
+              <ul className='reserve-history'>
+              {reservations.length<= 0 ? 'Noting yet' :(
+                reservations.map(r => {
+                  return (
+                    <li key={r.id} style={{"marginBottom": "30px"}}>
+                      <Reservation
+                      date={r.date} meal={r.meal} notes={r.notes}
+                      />
+                    </li>
+                  );
+                })
+              )
+            }
+              </ul>
+            </div>
           </header>
         </div>
       );

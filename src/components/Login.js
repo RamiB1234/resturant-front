@@ -56,6 +56,8 @@ class Login extends React.Component {
           saveUserDetails(res.data.userId, res.data.fullName, res.data.token)
           finishLoading();
           this.setState({
+            showEmailError: false,
+            showLoginError: false,
             isLoading: false
           });
         })
@@ -84,30 +86,33 @@ class Login extends React.Component {
       return (
         <div className="App">
           <header className="App-header">
+            <br/>
             <h1>Login</h1>
-            <form className='create-contact-form'
+            <br/>
+            <form
                 onSubmit={this.handleSubmit}>
-                    <div className='create-contact-details'>
-                        <div className='form-element'>
+                    <div>
+                        <div className='form-group'>
                           <label>Email</label>
-                          <input type='text' name='email' placeholder='someone@domain.com' value= {email} onChange={this.handleChangeEmail} />
+                          <input type='text' className='form-control' name='email' placeholder='someone@domain.com' value= {email} onChange={this.handleChangeEmail} />
                         </div>
-                        <div className='form-element'>
+                        <div className='form-group'>
                           <label>Password</label>
-                          <input type='password' name='password' placeholder='password' value= {password} onChange={this.handleChangePassword} />
+                          <input type='password' className='form-control' name='password' placeholder='password' value= {password} onChange={this.handleChangePassword} />
                         </div>
-                        <button className='form-element'
+                        <button className='btn btn-primary'
                         disabled={email === "" || password === "" || isLoading===true}>Login</button>
                     </div>
             </form>
+            <br/>
             {showEmailError=== false ? '': (
-            <div style={{"color": "red"}}>
-            Please enter a valid email
-          </div>
+            <div className="alert alert-danger" role="alert">
+              Please enter a valid email
+            </div>
             )}
             {showLoginError=== false ? '': (
-            <div style={{"color": "red"}}>
-            Username or password is not correct
+            <div className="alert alert-danger" role="alert">
+              email/password is not correct
           </div>
             )}
           </header>

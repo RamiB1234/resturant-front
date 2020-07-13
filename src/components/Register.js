@@ -83,6 +83,7 @@ class Register extends React.Component {
           this.setState({
             showRegistrationFail: false,
             showEmailAlreadyExists: false,
+            showEmailError: false,
             showRegistrationSuccessful: true,
             isLoading: false
           });
@@ -105,6 +106,7 @@ class Register extends React.Component {
             this.setState({
               showRegistrationFail: false,
               showEmailAlreadyExists: true,
+              showEmailError: false,
               showRegistrationSuccessful: false,
               isLoading: false
             });
@@ -113,6 +115,7 @@ class Register extends React.Component {
             this.setState({
               showRegistrationFail: true,
               showEmailAlreadyExists: false,
+              showEmailError: false,
               showRegistrationSuccessful: false,
               isLoading: false
             });
@@ -123,6 +126,9 @@ class Register extends React.Component {
       else{
         this.setState(() => ({
           showEmailError: true,
+          showRegistrationSuccessful: false,
+          showEmailAlreadyExists: false,
+          showRegistrationFail: false,
           email: ''
         }));
       }
@@ -136,53 +142,55 @@ class Register extends React.Component {
       return (
         <div className="App">
           <header className="App-header">
-            <h1>Register</h1>
-            <form className='create-contact-form'
+            <br/><h1>Register</h1><br/>
+            <form
                 onSubmit={this.handleSubmit}>
-                    <div className='create-contact-details'>
-                        <div className='form-element'>
+                    <div>
+                        <div className='form-group'>
                           <label>Fullname</label>
-                          <input type='text' name='fullName' placeholder='Rami' value={fullName}
+                          <input type='text' className='form-control' name='fullName' placeholder='Rami' value={fullName}
                           onChange={this.handleChangeFullName} />
                         </div>
-                        <div className='form-element'>
+                        <div className='form-group'>
                           <label>Email</label>
-                          <input type='text' name='email' placeholder='someone@domain.com' value={email}
+                          <input type='text' className='form-control' name='email' placeholder='someone@domain.com' value={email}
                           onChange={this.handleChangeEmail} />
                         </div>
-                        <div className='form-element'>
+                        <div className='form-group'>
                           <label>Mobile</label>
-                          <input type='text' name='mobile' placeholder='0599565705' value={mobile}
+                          <input type='text' className='form-control' name='mobile' placeholder='0599565705' value={mobile}
                           onChange={this.handleChangeMobile} />
                         </div>
-                        <div className='form-element'>
+                        <div className='form-group'>
                           <label>Password</label>
-                          <input type='password' name='password' placeholder='Password' value={password}
+                          <input type='password' className='form-control' name='password' placeholder='Password' value={password}
                           onChange={this.handleChangePassword} />
                         </div>
-                        <button className='form-element'
+                        <button className='btn btn-primary'
                         disabled={fullName === "" || email === "" || mobile === "" || password === "" || isLoading===true}>Register</button>
                     </div>
             </form>
+            <br/>
             {showEmailError=== false ? '': (
-            <div style={{"color": "red"}}>
-            Please enter a valid email
-          </div>
+            <div className="alert alert-danger" role="alert">
+              Please enter a valid email
+            </div>
             )}
             {showRegistrationFail=== false ? '': (
-            <div style={{"color": "red"}}>
-            User registration failed, please contact admin
-          </div>
+            <div className="alert alert-danger" role="alert">
+              User registration failed, please contact admin
+            </div>
+
             )}
             {showEmailAlreadyExists=== false ? '': (
-            <div style={{"color": "red"}}>
-            Email already exists
-          </div>
+            <div className="alert alert-danger" role="alert">
+              Email already exists
+            </div>
             )}
             {showRegistrationSuccessful=== false ? '': (
-            <div style={{"color": "green"}}>
-            User registration is successful
-          </div>
+            <div className="alert alert-success" role="alert">
+              User registration is successful
+            </div>
             )}
             {redirctToLogin== false ? '' : this.props.history.push('/') }
 

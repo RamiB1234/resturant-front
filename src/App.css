@@ -32,32 +32,19 @@ li a:hover {
   background-color: #111;
 }
 
-.create-contact-form {
-  padding: 20px;
-  max-width: 300px;
-  margin: 0 auto;
-  display: flex;
-  font-size: 16px;
+form {
+  border-radius: 25px;
+  background: #73AD21;
+  padding: 30px;
 }
 
-.create-contact-details {
-  margin-left: 20px;
+.reserve-history {
+  width: 450px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: auto;
-  background-color: #333;
-}
-
-.form-element {
-  margin: 10px;
-  padding: 10px;
-  margin: 10px;
-  width: 250px;
-  display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  background-color: #C62E5C;
 }
 
 
@@ -68,7 +55,7 @@ li a:hover {
 }
 
 .App-header {
-  background-color: #2b4d92;
+  background-color: #C62E5C;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
