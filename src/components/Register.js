@@ -10,6 +10,7 @@ class Register extends React.Component {
       mobile: "",
       password: "",
       showEmailError: false,
+      showEmailAlreadyExists: false,
       showRegistrationFail: false,
       showRegistrationSuccessful: false,
       redirctToLogin: false,
@@ -81,14 +82,12 @@ class Register extends React.Component {
 
           this.setState({
             showRegistrationFail: false,
+            showEmailAlreadyExists: false,
             showRegistrationSuccessful: true,
             isLoading: false
           });
 
           that.props.finishLoading();
-          this.setState({
-            isLoading: false
-          });
 
           setTimeout(function () {
             // redirect to login
@@ -100,10 +99,24 @@ class Register extends React.Component {
         })
         .catch(error => { 
           console.log("error :"+error);
-          this.setState({
-            showRegistrationFail: true,
-            showRegistrationSuccessful: false
-          });
+
+          // 406 error:
+          if(error.toString().includes('406')){
+            this.setState({
+              showRegistrationFail: false,
+              showEmailAlreadyExists: true,
+              showRegistrationSuccessful: false,
+              isLoading: false
+            });
+          }
+          else{
+            this.setState({
+              showRegistrationFail: true,
+              showEmailAlreadyExists: false,
+              showRegistrationSuccessful: false,
+              isLoading: false
+            });
+          }
           finishLoading();
         })
       }
@@ -117,7 +130,7 @@ class Register extends React.Component {
 
     render(){
 
-      const { fullName, email, mobile, password, showEmailError,
+      const { fullName, email, mobile, password, showEmailError, showEmailAlreadyExists,
          showRegistrationFail, showRegistrationSuccessful, redirctToLogin, isLoading } = this.state;
 
       return (
@@ -159,6 +172,11 @@ class Register extends React.Component {
             {showRegistrationFail=== false ? '': (
             <div style={{"color": "red"}}>
             User registration failed, please contact admin
+          </div>
+            )}
+            {showEmailAlreadyExists=== false ? '': (
+            <div style={{"color": "red"}}>
+            Email already exists
           </div>
             )}
             {showRegistrationSuccessful=== false ? '': (
