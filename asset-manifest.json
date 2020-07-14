@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/resturant-front/static/css/main.e3f4d514.chunk.css",
+    "main.js": "/resturant-front/static/js/main.641cfaba.chunk.js",
+    "main.js.map": "/resturant-front/static/js/main.641cfaba.chunk.js.map",
+    "runtime-main.js": "/resturant-front/static/js/runtime-main.82ac21f0.js",
+    "runtime-main.js.map": "/resturant-front/static/js/runtime-main.82ac21f0.js.map",
+    "static/css/2.fea45d51.chunk.css": "/resturant-front/static/css/2.fea45d51.chunk.css",
+    "static/js/2.92dc60e7.chunk.js": "/resturant-front/static/js/2.92dc60e7.chunk.js",
+    "static/js/2.92dc60e7.chunk.js.map": "/resturant-front/static/js/2.92dc60e7.chunk.js.map",
+    "index.html": "/resturant-front/index.html",
+    "precache-manifest.9f19b9a3fc2af1959d459122ad45ce7b.js": "/resturant-front/precache-manifest.9f19b9a3fc2af1959d459122ad45ce7b.js",
+    "service-worker.js": "/resturant-front/service-worker.js",
+    "static/css/2.fea45d51.chunk.css.map": "/resturant-front/static/css/2.fea45d51.chunk.css.map",
+    "static/css/main.e3f4d514.chunk.css.map": "/resturant-front/static/css/main.e3f4d514.chunk.css.map",
+    "static/js/2.92dc60e7.chunk.js.LICENSE.txt": "/resturant-front/static/js/2.92dc60e7.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.82ac21f0.js",
+    "static/css/2.fea45d51.chunk.css",
+    "static/js/2.92dc60e7.chunk.js",
+    "static/css/main.e3f4d514.chunk.css",
+    "static/js/main.641cfaba.chunk.js"
+  ]
+}
